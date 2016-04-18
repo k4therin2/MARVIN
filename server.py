@@ -2,25 +2,43 @@
 
 import socket
 import string
-"""
 #Possible COMMANDS for INBOX are "requestAmount" and "getMessage - number"
-def readCommand(str data):
-    if string.find('Inbox') == 0:
+def readCommand(data):
         devID = ''
         command = ''
-        x = 6
-        print 'Got their inbox'
+        x = 0
         while data[x] != '|':      #This gets us the DevID in the case of an in$
             devID = devID + data[x]
             x = x + 1
-        print devID  #At this point we have the DevID
         x = x + 1
         while data[x] != '|':
             command = command + data[x]
             x = x + 1
-	print command # we have the command now, so we will work with this to figure out how many args we should look for
-	if command == '
-"""
+	if command == 'requestAmount':
+            #here we handle getting the number of messages in inbox
+            return '5' #return the number found
+        elif command == 'getMessage':
+            arg1 = ''
+            x = x + 1
+            while data[x] != '|':
+                arg1 = arg1 + data[x]
+                x = x + 1
+            return 'This is a test message' #return the message string here
+        elif command == 'sendMessage':
+            target = ''
+            message = ''
+            x = x + 1 #move pointer to beginning of next arg
+            while data[x] != '|':
+                target = target + data[x]
+                x = x + 1
+            x = x + 1 #move pointer to next arg
+            while data[x] != '|':
+                message = message + data[x]
+                x = x + 1
+            #post message to targets inbox and notify target
+            return 'success'  #return success
+        else:
+            return 'unable to process command'
 host = ''
 port = 80
 backlog = 5
@@ -32,16 +50,7 @@ while 1:
     client, address = s.accept()
     data = client.recv(size)
     print data
-   # if string.find('Inbox') == 0:
-#	devID = ''
- #       command = ''
-  #      x = 6
-   #     print 'Got their inbox'
-#	while data[x] != '|':      #This gets us the DevID in the case of an inbox call
-#	    devID = devID + data[x]
- #           x = x + 1
-#	print devID  #At this point we have the DevID
-#	while data[x] != '|'
     if data:
-        client.send(data)
+	response = readCommand(data)	
+        client.send(response)
     client.close() 
