@@ -7,6 +7,9 @@ class Messenger
 
   def initialize
     @db_connection = Mysql.new 'localhost', 'ubuntu'
+    @database = "UserProfiles"
+    @user_table = "users"
+    @message_table = "messages"
   end
 
   def send_message(message)
