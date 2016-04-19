@@ -13,8 +13,20 @@ class Messenger
     @db_connection.query("USE UserProfiles")
   end
 
+  def get_uid_from_name(name)
+     name = name.downcase
+     query="SELECT * FROM users WHERE name=\"" + name +"\";" 
+     print query
+     results = @db_connection.query(query)
+     row = results.fetch_row
+     row[2]
+  end
+
   def send_message(to, from, message)
-    query="INSERT INTO messages (uid, uid_from, message) VALUES("+String(to)+","+String(from)+",\""+String(message)+"\");"
+    uid = get_uid_from_name(to)
+    uid_from = get_uid_from_name(from)
+    query="INSERT INTO messages (uid, uid_from, message) VALUES("+String(uid)+","+String(uid_from)+",\""+String(message)+"\");"
+    print "\n\n\n\n" + query+"\n\n\n\n"
     @db_connection.query(query)
   end
 
@@ -24,6 +36,7 @@ class Messenger
   end
 
   def add_user(name, device_id)
+    name = name.downcase
     query="INSERT INTO users (name, device_id) VALUES(\""+String(name)+"\","+String(device_id)+");"
     @db_connection.query(query)    
   end
@@ -48,5 +61,5 @@ class Messenger
 end 
 
 messenger = Messenger.new
-messages = messenger.retrieve_unread_messages("1")
+messages = messenger.send_message("austin","katherine","test message")
 
