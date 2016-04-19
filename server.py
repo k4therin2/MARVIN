@@ -36,6 +36,13 @@ def readCommand(data):
                 message = message + data[x]
                 x = x + 1
             #post message to targets inbox and notify target
+            #host2 = '172.19.14.201' #GET TARGETS IP INTO THIS FIELD SOMEHOW
+            #port2 = 81
+            #size2 = 2048
+            #s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            #s2.connect((host,port))
+            #s2.send('Activate the thing')
+            #s2.close
             return 'success'  #return success
         else:
             return 'unable to process command'

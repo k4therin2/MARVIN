@@ -1,42 +1,55 @@
-require 'socket' # Provides TCPServer and TCPSocket classes
+require 'socket' 
+require_relative 'messenger/messenger.rb'
 
-# Initialize a TCPServer object that will listen
-# on localhost:2345 for incoming connections.
-server = TCPServer.new 80 
+class Server
+  
+  def startup  
+    
+    @messenger = Messenger.new
+    @server = TCPServer.new 80
+    
+    loop do
 
-# loop infinitely, processing one incoming
-# connection at a time.
-loop do
+      socket = @server.accept
+      test = "test"
+      STDERR.puts test
+      request = socket.recv(4096)
+      STDERR.puts request
+      #ie: Dave|sendMessage|Catherine|i am working on marvin|
+      #ie: Dave|requestAmount|
+      #ie: Dave|readMessage|4
+ 
+      handle_request(request)
+      response = build_response(request)
 
-  # Wait until a client connects, then return a TCPSocket
-  # that can be used in a similar fashion to other Ruby
-  # I/O objects. (In fact, TCPSocket is a subclass of IO.)
-  socket = server.accept
-
-  # Read the first line of the request (the Request-Line)
-  request = socket.gets
-
-  # Log the request to the console for debugging
-  STDERR.puts request
-
-  response = "Hello World!\n"
-
-  # We need to include the Content-Type and Content-Length headers
-  # to let the client know the size and type of data
-  # contained in the response. Note that HTTP is whitespace
-  # sensitive, and expects each header line to end with CRLF (i.e. "\r\n")
-  socket.print "HTTP/1.1 200 OK\r\n" +
+      response_header = "HTTP/1.1 200 OK\r\n" +
                "Content-Type: text/plain\r\n" +
                "Content-Length: #{response.bytesize}\r\n" +
-               "Connection: close\r\n"
+               "Connection: close\r\n" + "\r\n"
 
-  # Print a blank line to separate the header from the response body,
-  # as required by the protocol.
-  socket.print "\r\n"
+      response_full = response
+      socket.print response_full
+      socket.close
+    end
 
-  # Print the actual response body, which is just "Hello World!\n"
-  socket.print response
+  end
 
-  # Close the socket, terminating the connection
-  socket.close
+  def handle_request(request)
+    args = request.split('|')
+    request_type = args[1]
+    case request_type
+    when 'sendMessage'
+      print args[2] + " " +args[1] + " "+ args[3]
+      @messenger.send_message(args[2], args[0], args[3])
+    when 'requestAmout'
+    when 'getMessage'
+    end
+  end
+
+  def build_response(request)
+    response = "Hi"
+  end
 end
+
+s = Server.new
+s.startup
