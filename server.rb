@@ -41,7 +41,7 @@ class Server
     when 'sendMessage'
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
-    when 'requestAmout'
+    when 'requestAmount'
     when 'getMessage'
     end
   end

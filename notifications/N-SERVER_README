@@ -1,0 +1,13 @@
+basically you gotta run the N-SERVER here at all times.
+Theres prolly gonna b 5 different N-SERVERs for each port for different pi connnections
+Each one will read from a different topic (e.g. a topic for its respected device.  If dave gets a
+	message, publish to dave)
+
+Each pi, on startup, will start it's own script which initiates a connection with the server,
+then just listens for ANY message, which will then cause it to play the message notification
+
+
+
+If we want, we can publish the sender's name to the topic, send that to the pi, and use
+a different TTS engine to say you have a message from -Sender-, otherwise the notification
+will need to be general
