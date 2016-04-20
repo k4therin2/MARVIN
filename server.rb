@@ -19,8 +19,7 @@ class Server
       #ie: Dave|requestAmount|
       #ie: Dave|readMessage|4
  
-      handle_request(request)
-      response = build_response(request)
+      response =  handle_request(request)
 
       response_header = "HTTP/1.1 200 OK\r\n" +
                "Content-Type: text/plain\r\n" +
@@ -36,13 +35,18 @@ class Server
 
   def handle_request(request)
     args = request.split('|')
+    token = args[0]
     request_type = args[1]
+    response = "There was an issue with your request."
     case request_type
     when 'sendMessage'
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
+      response = "Message sent!"
     when 'requestAmount'
+      @messenger.retrieve_unread_messages(token)
     when 'getMessage'
+    
     end
   end
 
