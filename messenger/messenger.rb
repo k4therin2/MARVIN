@@ -65,8 +65,12 @@ class Messenger
   
   def read_messages(mysql_response)
     n = mysql_response.num_rows
+#    print "ROW NUm: "+ String(n) +"\n"
+    messages = []
     n.times do 
-      puts mysql_response.fetch_row
+      msg = (mysql_response.fetch_row)[2]
+      messages << msg 
+      print msg + "\n"
     end
   end
 
