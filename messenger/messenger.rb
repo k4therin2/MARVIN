@@ -57,12 +57,24 @@ class Messenger
     @db_connection.query(query)    
   end
 
-  def retrieve_unread_messages(uid)
+  def retrieve_unread_messages(token)
+    uid = get_uid_from_token(token)
     query="SELECT * FROM messages WHERE uid="+uid+" AND IS_READ=0;"  
     messages = @db_connection.query(query)
     read_messages(messages)
   end
   
+  def get_uid_from_token(token)
+     did = get_did_from_token(token)
+     query = "select uid from users where device_id="+did+";"
+     ((@db_connection.query(query)).fetch_row)[0]
+  end
+  
+  def get_did_from_token(token)
+    query = "select device_id from devices where token=\"" + token+ "\";"
+    ((@db_connection.query(query)).fetch_row)[0]
+  end
+
   def read_messages(mysql_response)
     n = mysql_response.num_rows
 #    print "ROW NUm: "+ String(n) +"\n"
