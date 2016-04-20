@@ -16,7 +16,6 @@ class Messenger
   def get_uid_from_name(name)
      name = name.downcase
      query="SELECT * FROM users WHERE name=\"" + name +"\";" 
-     print "\n\n"+query+"\nlol\n\n"
      results = @db_connection.query(query)
      row = results.fetch_row
      row[0]
@@ -35,7 +34,7 @@ class Messenger
   def send_message(to, from, message)
     uid = get_uid_from_name(to)
     from_name = get_name_from_token(from)
-    print "\n FROM NAME: " + from_name + "\n"
+    #print "\n FROM NAME: " + from_name + "\n"
     uid_from = get_uid_from_name(from_name)
     query="INSERT INTO messages (uid, uid_from, message) VALUES("+String(uid)+","+String(uid_from)+",\""+String(message)+"\");"
     print "\n\n\n\n" + query+"\n\n\n\n"
@@ -77,5 +76,5 @@ class Messenger
   end
 end 
 
-messenger = Messenger.new
-messages = messenger.send_message("austin","amzn1.ask.account.AFP3ZWPOS2BGJR7OWJZ3DHPKMOMNWY4AY66FUR7ILBWANIHQN73QHBUI3GAR6SOUXNHQIYV2E2R67VOQDEVZU7XA6KFLJSI3OQOL7HCPVYAN5LHGVL6IYZ67VC3IUI7AHKE434ZO55OPXE6TNUHTF72US3K4XPELLJ2VHGH72223UFIPEF7WG7WJIOOJNGLDJFM2TSNZRGND5JI","test message")
+#messenger = Messenger.new
+#messages = messenger.send_message("austin","amzn1.ask.account.AFP3ZWPOS2BGJR7OWJZ3DHPKMOMNWY4AY66FUR7ILBWANIHQN73QHBUI3GAR6SOUXNHQIYV2E2R67VOQDEVZU7XA6KFLJSI3OQOL7HCPVYAN5LHGVL6IYZ67VC3IUI7AHKE434ZO55OPXE6TNUHTF72US3K4XPELLJ2VHGH72223UFIPEF7WG7WJIOOJNGLDJFM2TSNZRGND5JI","test message")

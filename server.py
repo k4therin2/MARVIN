@@ -10,6 +10,7 @@ def readCommand(data):
         while data[x] != '|':      #This gets us the DevID in the case of an in$
             devID = devID + data[x]
             x = x + 1
+            print data[x]
         x = x + 1
         while data[x] != '|':
             command = command + data[x]
@@ -36,13 +37,15 @@ def readCommand(data):
                 message = message + data[x]
                 x = x + 1
             #post message to targets inbox and notify target
-            #host2 = '172.19.14.201' #GET TARGETS IP INTO THIS FIELD SOMEHOW
-            #port2 = 81
-            #size2 = 2048
-            #s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            #s2.connect((host,port))
-            #s2.send('Activate the thing')
-            #s2.close
+            host2 = '192.5.110.7' #GET TARGETS IP INTO THIS FIELD SOMEHOW
+            port2 = 82
+            size2 = 2048
+            s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s2.connect((host,port))
+            print 'maybe it work'
+            print s2
+            s2.send('Activate the thing')
+            s2.close
             return 'success'  #return success
         else:
             return 'unable to process command'
