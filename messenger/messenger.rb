@@ -98,7 +98,6 @@ class Messenger
 
   def build_check_messages_response(token)
       from, messages = retrieve_unread_messages(token)
-      messages.size > 1 ? (plural = "s"): (plural = "")
       if messages.size == 0
         response = "You have no new messages."
       else if messages.size == 1
@@ -122,5 +121,5 @@ class Messenger
     end
     response
  end  
-end 
 
+end
