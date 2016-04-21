@@ -21,6 +21,12 @@ class Messenger
      row[0]
   end
 
+  def get_name_from_uid(uid)
+    query="SELECT name FROM users WHERE uid="+uid+";"
+    result = @db_connection.query(query)
+    row = result.fetch_row
+    row[0]
+  end
   def get_name_from_token(token)
      query="SELECT device_id FROM devices WHERE token=\"" + token +"\";" 
      results = @db_connection.query(query)

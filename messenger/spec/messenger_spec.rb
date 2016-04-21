@@ -6,8 +6,9 @@ describe Messenger do
   before(:all) do
     @messenger = Messenger.new
     @mid = nil
+    @token = "amzn1.ask.account.AFP3ZWPOS2BGJR7OWJZ3DHPKMOMNWY4AY66FUR7ILBWANIHQN73QHBUI3GAR6SOUXNHQIYV2E2R67VOQDEVZU7XA6KFLJSI3OQOL7HCPVYAN5LHGVL6IYZ67VC3IUI7AHKE434ZO55OPXE6TNUHTF72US3K4XPELLJ2VHGH72223UFIPEF7WG7WJIOOJNGLDJFM2TSNZRGND5JI"
     @r = Random.new_seed
-    @messenger.send_message("austin","amzn1.ask.account.AFP3ZWPOS2BGJR7OWJZ3DHPKMOMNWY4AY66FUR7ILBWANIHQN73QHBUI3GAR6SOUXNHQIYV2E2R67VOQDEVZU7XA6KFLJSI3OQOL7HCPVYAN5LHGVL6IYZ67VC3IUI7AHKE434ZO55OPXE6TNUHTF72US3K4XPELLJ2VHGH72223UFIPEF7WG7WJIOOJNGLDJFM2TSNZRGND5JI","test message: " + String(@r))
+    @messenger.send_message("austin",@token,"test message: " + String(@r))
     @result = @messenger.db_connection.query("select * from messages where message= \"test message: "+ String(@r) +"\";")
     @mid=(@result.fetch_row)[0]
   end
@@ -20,7 +21,7 @@ describe Messenger do
     expect(@messenger.get_uid_from_name("austin")).to eq "2"
   end
   it 'can get name from token' do
-    expect(@messenger.get_name_from_token("amzn1.ask.account.AFP3ZWPOS2BGJR7OWJZ3DHPKMOMNWY4AY66FUR7ILBWANIHQN73QHBUI3GAR6SOUXNHQIYV2E2R67VOQDEVZU7XA6KFLJSI3OQOL7HCPVYAN5LHGVL6IYZ67VC3IUI7AHKE434ZO55OPXE6TNUHTF72US3K4XPELLJ2VHGH72223UFIPEF7WG7WJIOOJNGLDJFM2TSNZRGND5JI")).to eq "bob"
+    expect(@messenger.get_name_from_token(@token)).to eq "bob"
   end
   it 'can send a message' do
     expect(@mid).to_not eq nil
@@ -38,4 +39,9 @@ describe Messenger do
   it 'can retrieve messages' do
     expect{@messenger.retrieve_messages("1")}.to_not raise_error
   end   
+  it 'can build appropriate response' do
+    response = @messenger.build_check_messages_response(@token)
+    print response
+    expect(true).to eq true
+  end
 end
