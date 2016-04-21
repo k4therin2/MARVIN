@@ -97,16 +97,16 @@ class Messenger
   end
 
   def build_check_messages_response(token)
-      from, messages = retrieve_unread_messages(token)
+     (from, messages)= retrieve_unread_messages(token)
       if messages.size == 0
         response = "You have no new messages."
-      else if messages.size == 1
+      elsif messages.size == 1
         response = "You have a message from " + get_from(from)+"."
-      else if messages.size > 1
+      elsif messages.size > 1
         response = "You have messages from " + get_from(from)+"."
       end
       response
- end
+  end
 
  def get_from(from)
     size = from.size
