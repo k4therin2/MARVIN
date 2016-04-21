@@ -23,7 +23,7 @@ describe Messenger do
   it 'can add a user' do
     @messenger.add_user(@user_name, @token)
     devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
-    uid = devices_check.fetch_row[0]
+    did = devices_check.fetch_row[0]
     users_check = @messenger.db_connection.query('select name from users where device_id=" ' + did + '";')
     name = users_check.fetch_row[0]
     expect(name).to eq @user_name

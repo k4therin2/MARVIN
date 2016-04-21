@@ -11,7 +11,7 @@ class Messenger
     @database = 'Marvin'
     @user_table = 'users'
     @message_table = 'messages'
-    @db_connection.query('USE Marvin')
+    @db_connection.query('USE UserProfiles')
   end
 
   #========== ADD/DELETE A USER ==============
@@ -28,7 +28,7 @@ class Messenger
 
   def delete_user_by_name(name)
     name = name.downcase
-    query = "DELETE FROM USERS WHERE name=\"" + name + "\";"
+    query = "DELETE FROM users WHERE name=\"" + name + "\";"
     @db_connection.query(query)
   end
 
