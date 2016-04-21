@@ -14,7 +14,7 @@ class Messenger
     @db_connection.query('USE UserProfiles')
   end
 
-  #========== ADD A USER ==============
+  #========== ADD/DELETE A USER ==============
   def add_user(name, token)
     name = name.downcase
     query = 'INSERT INTO devices (token) VALUES("' + token + '");'
@@ -23,6 +23,12 @@ class Messenger
     results = @db_connection.query(query).fetch_row
     device_id = results[0]
     query = 'INSERT INTO users (name, device_id) VALUES("' + String(name) + '",' + String(device_id) + ');'
+    @db_connection.query(query)
+  end
+
+  def delete_user_by_name(name)
+    name = name.downcase
+    query = "DELETE FROM USERS WHERE name=\"" + name + "\";"
     @db_connection.query(query)
   end
 
@@ -69,6 +75,7 @@ class Messenger
   #======= ALTERING/RETRIEVEING MESSAGE METHODS =============
 
   # send a message to TO, from FROM reading MESSAGE
+  # TO is a name, FROM is a token (!!!!!!!!!!)
   def send_message(to, from, message)
     uid = get_uid_from_name(to)
     from_name = get_name_from_token(from)
