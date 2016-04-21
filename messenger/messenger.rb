@@ -102,9 +102,9 @@ class Messenger
       if messages.size == 0
         response = "You have no new messages."
       else if messages.size == 1
-        response = "You have a message from " + get_from(from)"."
+        response = "You have a message from " + get_from(from)+"."
       else if messages.size > 1
-        response = "You have messages from " + get_from(from)"."
+        response = "You have messages from " + get_from(from)+"."
       end
       response
  end
@@ -112,9 +112,9 @@ class Messenger
  def get_from(from)
     size = from.size
     response =""
-    while size > 0
+    while size > 2
       if size == 2
-         response = from[size] + " and " from[size-1]
+         response = from[size] + " and " + from[size-1]
       else
          response = from[size] + ","
          size = size - 1
@@ -122,6 +122,5 @@ class Messenger
     end
     response
  end  
-
 end 
 
