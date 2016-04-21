@@ -7,7 +7,7 @@ class Messenger
 
   def initialize
     @db_connection = Mysql.new 'localhost', 'ubuntu'
-    @database = "UserProfiles"
+    @database = "Marvin"
     @user_table = "users"
     @message_table = "messages"
     @db_connection.query("USE UserProfiles")
@@ -70,7 +70,7 @@ class Messenger
     read_messages(messages)
   end
 
-  def retrieve_unread_messages(token, from)
+  def retrieve_unread_messages_from(token, from)
     uid = get_uid_from_token(token)
     uid_from = get_uid_from_name(from)
     query = "select * from messages where uid="+uid+" AND uid_from="+uid_from+" AND IS_READ=0;"
@@ -133,7 +133,7 @@ class Messenger
  end
  
  def build_read_message_response(token, from)
-   (from, messages)=retrieve_unread_messages(token, from)
+   (from, messages)=retrieve_unread_messages_from(token, from)
    size = from.size
       response =""
     while size > 0

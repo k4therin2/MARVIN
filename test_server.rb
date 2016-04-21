@@ -1,4 +1,6 @@
 require 'socket' 
+require 'rubygems'
+require 'mqtt'
 require_relative 'messenger/messenger.rb'
 
 class Server
@@ -6,7 +8,7 @@ class Server
   def startup  
     
     @messenger = Messenger.new
-    @server = TCPServer.new 77
+    @server = TCPServer.new 80
     
     loop do
 
@@ -49,6 +51,10 @@ class Server
     when 'sendMessage'
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
+      STDERR.puts 'made it'
+      MQTT::Client.connect('localhost') do |c|
+        c.publish('test', 'notify')
+      end
       response = "Message sent!"
     when 'checkMessages'
       response = @messenger.build_check_messages_response(token)

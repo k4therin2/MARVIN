@@ -6,7 +6,7 @@ import paho.mqtt.client as mqtt
 #THIS FILE BELONGS ON THE CLOUD, AND IS ONE OF SEVERAL NOTIFICATION SERVICES, ONE FOR EACH PI
 
 host = ''
-port = 81
+port = 82
 print host
 backlog = 5
 size = 2048

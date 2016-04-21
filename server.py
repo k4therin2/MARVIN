@@ -2,6 +2,12 @@
 
 import socket
 import string
+import paho.mqtt.client as mqtt
+
+mqttc = mqtt.Client('python_pub')
+
+mqttc.connect('localhost', 1883)
+
 #Possible COMMANDS for INBOX are "requestAmount" and "getMessage - number"
 def readCommand(data):
         devID = ''
@@ -35,6 +41,8 @@ def readCommand(data):
             while data[x] != '|':
                 message = message + data[x]
                 x = x + 1
+            mqttc.publish('test','hello')
+	    mqttc.loop(1)
             #post message to targets inbox and notify target
             return 'success'  #return success
         else:
@@ -46,7 +54,7 @@ size = 4096
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((host,port))
 s.listen(backlog)
-while 1:
+while mqttc.loop() == 0:
     client, address = s.accept()
     data = client.recv(size)
     print data
