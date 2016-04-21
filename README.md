@@ -16,7 +16,7 @@ The function, written in Python, interfaces with our *[EC2 Instance](https://aws
 
 Finally, if you configure our notification service (that uses [MQTT](http://mqtt.org/)), your Pi will also alert you when you have new messages waiting to be read by MARVIN.
 
-**There's too many folders. What goes where? **
+**There's too many folders. What goes where?**
 
  1. `MQTT`  and `Notifications` contains the MQTT listener/server to be set up on the Pi and server.
  2.  `Cloud` includes everything that goes in the *Lamda function* (`Cloud/Lambda`) and  the *Alexa Voice Service Profile* (`Cloud/Alexa`). 
