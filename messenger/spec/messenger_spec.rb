@@ -69,10 +69,10 @@ describe Messenger do
     @messenger.add_user(@user_name, @token)
     devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
     did = devices_check.fetch_row[0]
-    users_check = @messenger.db_connection.query('select name from users where device_id=" ' + did + '";')
+    users_check = @messenger.db_connection.query('select name from users where device_id=' + did + ';')
     name = users_check.fetch_row[0]
-    uid_check = @messenger.db_connection.query('select uid from users where device_id=" ' + did + '";')
-    uid = users_check.fetch_row[0]
+    uid_check = @messenger.db_connection.query('select uid from users where device_id=' + did + ';')
+    uid = uid_check.fetch_row[0]
     expect(@messenger.get_name_from_uid(uid)).to eq name
     @messenger.delete_user_by_name(@user_name)
   end
