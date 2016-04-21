@@ -79,11 +79,16 @@ class Messenger
     n = mysql_response.num_rows
 #    print "ROW NUm: "+ String(n) +"\n"
     messages = []
+    from = []
     n.times do 
-      msg = (mysql_response.fetch_row)[2]
+      row = mysql_response.fetch_row
+      msg = row[2]
+      from_uid = row[4]
+      from << get_name_from_uid(from_uid)
       messages << msg 
       print msg + "\n"
     end
+    [from, messages]
   end
 
   def retrieve_messages(uid)

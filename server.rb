@@ -15,9 +15,16 @@ class Server
       STDERR.puts test
       request = socket.recv(4096)
       STDERR.puts request
-      #ie: Dave|sendMessage|Catherine|i am working on marvin|
-      #ie: Dave|requestAmount|
-      #ie: Dave|readMessage|4
+      #  
+      # Dave|sendMessage|Catherine|i am working on marvin|
+      #ie
+      # checkMessages: "check messages"
+      #    token|checkMessages| 
+      #    response: You have messages from Dave, Bob and Cindy. 
+      # readMessage: 
+      #    token|readMessage|bob
+      #    response: Bob says "Hello."
+
  
       response =  handle_request(request)
 
@@ -43,15 +50,16 @@ class Server
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
       response = "Message sent!"
-    when 'requestAmount'
-      @messenger.retrieve_unread_messages(token)
-    when 'getMessage'
+    when 'checkMessages'
+      response = build_check_messages_response(messages)
+    when 'readMessages'
     
     end
   end
 
-  def build_response(request)
-    response = "Hi"
+  def build_check_messages_response(messages)
+      messages = @messenger.retrieve_unread_messages(token)
+      response = build_check_messages_response(messages)     
   end
 end
 
