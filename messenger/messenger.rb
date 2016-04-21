@@ -69,6 +69,12 @@ class Messenger
     messages = @db_connection.query(query)
     read_messages(messages)
   end
+
+  def retrieve_unread_messages(token, from)
+    uid = get_uid_from_token(token)
+    uid_from = get_uid_from_name(from)
+    query = "select * from messages where uid="+uid+" AND uid_from="+uid_from+" AND IS_READ=0;"
+  end
   
   def get_uid_from_token(token)
      did = get_did_from_token(token)
@@ -107,9 +113,10 @@ class Messenger
       if messages.size == 0
         response = "You have no new messages."
       elsif messages.size == 1
-        response = "You have a message from " + get_from(from)+"."
+        print get_from(from)
+        response = "Hi! You have a message from " + get_from(from)+"."
       elsif messages.size > 1
-        response = "You have messages from " + get_from(from)+"."
+        response = "Hello! You have messages from " + get_from(from)+"."
       end
       response
   end
@@ -124,11 +131,24 @@ class Messenger
    end
    response
  end
+ 
+ def build_read_message_response(token, from)
+   (from, messages)=retrieve_unread_messages(token, from)
+   size = from.size
+      response =""
+    while size > 0
+      response << from[size-1]+" says " + messages[size-1] + ".  "
+    end
+    response
+ end
 
  def get_from(from_array)
     from = from_array.uniq 
     size = from.size
     response =""
+    if size == 1
+      response << from[0]
+    end
     while size > 1 
       if size == 2
          response << from[size-1] + " and " + from[size-2]
