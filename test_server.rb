@@ -51,9 +51,9 @@ class Server
     when 'sendMessage'
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
-      STDERR.puts 'made it'
+      STDERR.puts args[2]
       MQTT::Client.connect('localhost') do |c|
-        c.publish('test', 'notify')
+        c.publish(args[2], 'notify')
       end
       response = "Message sent!"
     when 'checkMessages'
