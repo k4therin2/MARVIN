@@ -22,3 +22,38 @@ Finally, if you configure our notification service (that uses [MQTT](http://mqtt
  2.  `Cloud` includes everything that goes in the *Lamda function* (`Cloud/Lambda`) and  the *Alexa Voice Service Profile* (`Cloud/Alexa`). 
  3. `Messenger` contains the messenger application that interfaces with the database, called by `server.rb` to complete requests made by the user.
 
+**Cool. How do I get started?**
+
+## Pi
+
+There are 4 major scripts that need to be running on the pi.
+
+To begin the alexa service, first navigate to `Alexa/samples/companionService/` and
+
+`sudo npm start`
+
+Next, navigate to the `Alexa/samples/javaclient` folder in a terminal **WITHIN VNC** and run
+
+`mvn exec:exec`
+
+Follow the instructions. If this fails, try `sudo env "PATH=$PATH" mvn exec:exec`.
+
+Remember to start the notification listener as well:
+
+`notifcations\notification_listener.py`
+
+## EC2
+
+To start the server, make sure appropriate ports are open in your security group and run
+`ruby server.rb`
+To start the notification service, 
+`notifications/notifcation_server_name.py`
+Note there should be one of these scripts running for each Pi connected to the service- that means if you have 5 Pis talking to eachother, you should have 5 seperate notifcation server scripts. Make sure the ports match up!
+`ruby server.rb`
+
+## Pi
+
+Let's go back to the pi for a moment and start the notification listener.
+
+`sudo ./notification_listener.py `
+
