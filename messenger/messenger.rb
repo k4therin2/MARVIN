@@ -114,14 +114,16 @@ class Messenger
       response
   end
 
- def get_from(from)
+ def get_from(from_array)
+    from = from_array.uniq 
     size = from.size
     response =""
-    while size > 2
+    while size > 1 
       if size == 2
-         response = from[size] + " and " + from[size-1]
+         response << from[size-1] + " and " + from[size-2]
+         size = size - 2
       else
-         response = from[size] + ","
+         response << from[size-1] + ","
          size = size - 1
       end
     end

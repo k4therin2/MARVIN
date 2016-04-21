@@ -40,8 +40,8 @@ describe Messenger do
     expect{@messenger.retrieve_messages("1")}.to_not raise_error
   end   
   it 'can build appropriate response' do
-    response = @messenger.build_check_messages_response(@token)
-    print response
+    response = @messenger.build_check_messages_response('sheep')
+    print "\n |respnse: " + response + "|\n"
     expect(true).to eq true
   end
 end
