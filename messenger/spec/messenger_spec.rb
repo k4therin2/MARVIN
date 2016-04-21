@@ -1,51 +1,93 @@
 require_relative '../messenger.rb'
 
-
 describe Messenger do
-  #setup
+  # setup
   before(:all) do
     @messenger = Messenger.new
-    @mid = nil
-    @token = "amzn1.ask.account.AFP3ZWPOS2BGJR7OWJZ3DHPKMOMNWY4AY66FUR7ILBWANIHQN73QHBUI3GAR6SOUXNHQIYV2E2R67VOQDEVZU7XA6KFLJSI3OQOL7HCPVYAN5LHGVL6IYZ67VC3IUI7AHKE434ZO55OPXE6TNUHTF72US3K4XPELLJ2VHGH72223UFIPEF7WG7WJIOOJNGLDJFM2TSNZRGND5JI"
-    @r = Random.new_seed
-    @messenger.send_message("austin",@token,"test message: " + String(@r))
-    @result = @messenger.db_connection.query("select * from messages where message= \"test message: "+ String(@r) +"\";")
-    @mid=(@result.fetch_row)[0]
+    @user_name = 'test_user'
+    @token = 'test_token'
+    @messenger.delete_user_by_name(@user_name) # in case previous test crashed
   end
 
-  #tests
+  # shutdown
+  after(:all) do
+    @messenger.db_connection.close
+  end
+
+  # test init
   it 'can connect to a database' do
-   expect{Messenger.new}.to_not raise_error
+    expect { Messenger.new }.to_not raise_error
   end
+
+  #========== ADD A USER ==============
+  it 'can add a user' do
+    @messenger.add_user(@user_name, @token)
+    devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
+    uid = devices_check.fetch_row[0]
+    users_check = @messenger.db_connection.query('select name from users where device_id=" ' + did + '";')
+    name = users_check.fetch_row[0]
+    expect(name).to eq @user_name
+    @messenger.delete_user_by_name(@user_name)
+  end
+
+  #======= GET UID METHODS =============
+  # get_uid_from_name
   it 'can get uid from name' do
-    expect(@messenger.get_uid_from_name("austin")).to eq "2"
+    @messenger.add_user(@user_name, @token)
+    devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
+    did = devices_check.fetch_row[0]
+    users_check = @messenger.db_connection.query('select uid from users where device_id=" ' + did + '";')
+    uid = users_check.fetch_row[0]
+    expect(@messenger.get_uid_from_name(@user_name)).to eq uid
+    @messenger.delete_user_by_name(@user_name)
   end
+
+  # get_uid_from_token
+  it 'can get uid from token' do
+    @messenger.add_user(@user_name, @token)
+    devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
+    did = devices_check.fetch_row[0]
+    users_check = @messenger.db_connection.query('select uid from users where device_id=" ' + did + '";')
+    uid = users_check.fetch_row[0]
+    expect(@messenger.get_uid_from_token(@token)).to eq uid
+    @messenger.delete_user_by_name(@user_name)
+  end
+
+  #======= GET DID METHODS ==============
+  # get_did_from_token
+  it 'can get did from token' do
+    @messenger.add_user(@user_name, @token)
+    devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
+    did = devices_check.fetch_row[0]
+    expect(@messenger.get_did_from_token(@token)).to eq did
+    @messenger.delete_user_by_name(@user_name)
+  end
+
+  #======= GET NAME METHODS =============
+  # get_name_from_uid
+  it 'can get name from uid' do
+    @messenger.add_user(@user_name, @token)
+    devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
+    did = devices_check.fetch_row[0]
+    users_check = @messenger.db_connection.query('select name from users where device_id=" ' + did + '";')
+    name = users_check.fetch_row[0]
+    uid_check = @messenger.db_connection.query('select uid from users where device_id=" ' + did + '";')
+    uid = users_check.fetch_row[0]
+    expect(@messenger.get_name_from_uid(uid)).to eq name
+    @messenger.delete_user_by_name(@user_name)
+  end
+
+  # get_name_from_token
   it 'can get name from token' do
-    expect(@messenger.get_name_from_token(@token)).to eq "bob"
+    @messenger.add_user(@user_name, @token)
+    devices_check = @messenger.db_connection.query('select device_id from devices where token="' + @token + '"')
+    did = devices_check.fetch_row[0]
+    users_check = @messenger.db_connection.query('select name from users where device_id=" ' + did + '";')
+    name = users_check.fetch_row[0]
+    expect(@messenger.get_name_from_token(@token)).to eq name
+    @messenger.delete_user_by_name(@user_name)
   end
-  it 'can send a message' do
-    expect(@mid).to_not eq nil
-  end
-  it 'can mark message read' do 
-    @messenger.mark_read(@mid)
-    is_read = (@messenger.db_connection.query("select is_read from messages where mid="+@mid+";").fetch_row)[0]
-    expect(is_read).to eq "1"
-  end
-  it 'can add user' do 
-   @messenger.add_user("user"+String(@r), "token"+String(@r))
-   newuser =@messenger.db_connection.query("select * from users where name=\"user"+String(@r)+"\";")
-   expect(newuser).to_not eq nil
-  end
-  it 'can retrieve messages' do
-    expect{@messenger.retrieve_messages("1")}.to_not raise_error
-  end   
-  it 'can build appropriate response' do
-    response = @messenger.build_check_messages_response('sheep')
-    expect(response).to eq 'You have messages from teresa and meghan.'
-  end
-  it 'can recite messages' do
-    response = @messenger.build_read_messages_response('sheep')
-    print response
-    expect(response).to eq 'teresa says Lets get food!.  meghan says Lets get food!.  '
-  end
+
+  #======= ALTERING/RETRIEVEING MESSAGE METHODS TESTED MANUALLY =============
 end
+
