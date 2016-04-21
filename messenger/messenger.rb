@@ -95,5 +95,33 @@ class Messenger
     query="SELECT * FROM messages WHERE uid="+uid+" AND IS_READ=0;"  
     @db_connection.query(query)
   end
+
+  def build_check_messages_response(token)
+      from, messages = retrieve_unread_messages(token)
+      messages.size > 1 ? (plural = "s"): (plural = "")
+      if messages.size == 0
+        response = "You have no new messages."
+      else if messages.size == 1
+        response = "You have a message from " + get_from(from)"."
+      else if messages.size > 1
+        response = "You have messages from " + get_from(from)"."
+      end
+      response
+ end
+
+ def get_from(from)
+    size = from.size
+    response =""
+    while size > 0
+      if size == 2
+         response = from[size] + " and " from[size-1]
+      else
+         response = from[size] + ","
+         size = size - 1
+      end
+    end
+    response
+ end  
+
 end 
 
