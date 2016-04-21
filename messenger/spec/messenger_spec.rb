@@ -41,7 +41,6 @@ describe Messenger do
   end   
   it 'can build appropriate response' do
     response = @messenger.build_check_messages_response('sheep')
-    print "\n |respnse: " + response + "|\n"
-    expect(true).to eq true
+    expect(response).to eq 'You have messages from teresa and meghan.'
   end
 end
