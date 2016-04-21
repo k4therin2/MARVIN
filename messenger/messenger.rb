@@ -114,6 +114,17 @@ class Messenger
       response
   end
 
+ def build_read_messages_response(token)
+   (from, messages)=retrieve_unread_messages(token)
+   size = from.size
+     response = ""
+   while size > 0
+     response << from[size-1] + " says " + messages[size-1] + ".  "
+     size = size - 1
+   end
+   response
+ end
+
  def get_from(from_array)
     from = from_array.uniq 
     size = from.size

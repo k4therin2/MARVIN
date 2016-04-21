@@ -43,4 +43,9 @@ describe Messenger do
     response = @messenger.build_check_messages_response('sheep')
     expect(response).to eq 'You have messages from teresa and meghan.'
   end
+  it 'can recite messages' do
+    response = @messenger.build_read_messages_response('sheep')
+    print response
+    expect(response).to eq 'teresa says Lets get food!.  meghan says Lets get food!.  '
+  end
 end
