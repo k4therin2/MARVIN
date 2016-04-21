@@ -1,0 +1,59 @@
+{
+  "intents": [
+    {
+      "intent": "SendToIntent",
+      "slots": [
+        {
+          "name": "Who",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "SendToNowIntent",
+      "slots": [
+        {
+          "name": "Who",
+          "type": "AMAZON.US_FIRST_NAME"
+        },
+        {
+          "name": "Message",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "SendNowIntent",
+      "slots": [
+        {
+          "name": "Message",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "CheckInboxIntent"
+    },
+        {
+      "intent": "HelpMeIntent"
+    },
+    {
+      "intent": "ReadMessageIntent",
+      "slots": [
+        {
+          "name": "Who",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    }, 
+    {
+      "intent": "ReadMessagesIntent"
+    },
+    {
+      "intent": "SendIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+   }
+  ]
+}
