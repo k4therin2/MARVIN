@@ -1,4 +1,4 @@
-CREATE TABLE Marvin;
+iCREATE TABLE Marvin;
 
 CREATE TABLE messages (
   mid INT NOT NULL AUTO_INCREMENT,
@@ -9,7 +9,7 @@ CREATE TABLE messages (
   uid_from INT NOT NULL,
   PRIMARY KEY (mid,uid, uid_from),
   FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE,
-  FOREIGN KEY (uid_from) REFERENCES users(uid) ON DELETE CASCADE
+  FOREIGN KEY (uid_from) REFERENCES messages(uid) ON DELETE CASCADE
 );
 
 
