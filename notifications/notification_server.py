@@ -28,6 +28,6 @@ client2.on_message = on_message
 
 client2.connect('localhost', 1883, 60)
 
-client2.subscribe('Austin')
+client2.subscribe('austin')
 
 client2.loop_forever()

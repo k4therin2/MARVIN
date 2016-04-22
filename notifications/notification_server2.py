@@ -20,6 +20,7 @@ print data
 #client.close()
 
 def on_message(client3, userdata, msg):
+    print data
     client.send(data)    
     
 client2 = mqtt.Client()
@@ -28,6 +29,6 @@ client2.on_message = on_message
 
 client2.connect('localhost', 1883, 60)
 
-client2.subscribe('test')
+client2.subscribe('rose')
 
 client2.loop_forever()

@@ -1,4 +1,6 @@
-require 'socket' 
+require 'socket'
+require 'mqtt'
+require 'rubygems' 
 require_relative 'messenger/messenger.rb'
 
 class Server
@@ -27,6 +29,7 @@ class Server
 
  
       response =  handle_request(request)
+      print "\nRESPONSE : "+ response +" || end response\n"
 
       response_header = "HTTP/1.1 200 OK\r\n" +
                "Content-Type: text/plain\r\n" +
@@ -49,6 +52,10 @@ class Server
     when 'sendMessage'
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
+      STDERR.puts args[2].downcase
+      MQTT::Client.connect('localhost') do |c|
+        c.publish(args[2].downcase, 'notify')
+      end
       response = "Message sent!"
     when 'checkMessages'
       response = @messenger.build_check_messages_response(token)
@@ -62,3 +69,4 @@ end
 
 s = Server.new
 s.startup
+
