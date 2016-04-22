@@ -1,5 +1,3 @@
-#!/usr/bin/ruby
-
 require 'mysql'
 
 class Messenger
@@ -61,7 +59,8 @@ class Messenger
   # send a message to TO, from FROM reading MESSAGE
   # TO is a name, FROM is a token (!!!!!!!!!!)
   def send_message(to, from_token, message)
-    if !user_exists?(to)
+    if user_exists?(to)
+      print "user didnt exist"
       return "That user doesn't exist, you moron."
     else
       uid = get_uid_from_name(to)
@@ -76,7 +75,7 @@ class Messenger
   def user_exists?(to)
     query = 'select * from users where name="' + to + '";'
     response = @db_connection.query(query)
-    !response.nil?
+    response.nil?
   end
 
   def delete_message(to, from_token, message)
@@ -102,8 +101,7 @@ class Messenger
   # get all unread messages
   def retrieve_unread_messages(token)
     uid = get_uid_from_token(token)
-    query = 'SELECT * FROM messages WHERE uid=' + uid + ' AND is_read=FALSE'+';'
-    print query
+    query = 'SELECT * FROM messages WHERE uid=' + uid + ';'
     messages = @db_connection.query(query)
     read_messages(messages)
   end
@@ -122,17 +120,15 @@ class Messenger
     n = mysql_response.num_rows
     messages = []
     from = []
-    mid = []
     n.times do
       row = mysql_response.fetch_row
       msg = row[2]
-      print "MESSAGE " + msg
       from_uid = row[5]
       from << get_name_from_uid(from_uid)
       messages << msg
-      mid << row[0]
+      print msg + "\n"
     end
-    [mid, from, messages]
+    [from, messages]
   end
 
   # build String response to "Do I have any messages?"
@@ -151,12 +147,11 @@ class Messenger
 
   # build String response to "Read me all my messages."
   def build_read_messages_response(token)
-    (mid, from, messages) = retrieve_unread_messages(token)
+    (from, messages) = retrieve_unread_messages(token)
     size = from.size
     response = ''
     while size > 0
       response << from[size - 1] + ' says ' + messages[size - 1] + '.  '
-      mark_read(mid)
       size -= 1
     end
     response
@@ -164,12 +159,11 @@ class Messenger
 
   # build String response to "Read me a message from Dan." (dan = from)
   def build_read_message_response(token, from)
-    (mid, from, messages) = retrieve_unread_messages_from(token, from)
+    (from, messages) = retrieve_unread_messages_from(token, from)
     size = from.size
     response = ''
     while size > 0
       response << from[size - 1] + ' says ' + messages[size - 1] + '.  '
-      mark_read(mid)
       size -= 1
     end
     response

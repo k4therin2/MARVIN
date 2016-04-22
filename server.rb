@@ -43,6 +43,8 @@ class Server
       response = @messenger.build_read_messages_response(token)
     when 'readMessage' # read one message from a specified sender
       response = @messenger.build_read_message_response(token, args[2])
+    when 'moodCheck'
+      response = @messenger.build_mood_check_response(token, args[2])
     end
   end
 end
