@@ -83,14 +83,14 @@ class Messenger
 
   # retrieve all messages
   def retrieve_messages(uid)
-    query = 'SELECT * FROM messages WHERE uid=' + uid + ' AND IS_READ=0;'
+    query = 'SELECT * FROM messages WHERE uid=' + uid + ' AND IS_READ=NULL;'
     @db_connection.query(query)
   end
 
   # get all unread messages
   def retrieve_unread_messages(token)
     uid = get_uid_from_token(token)
-    query = 'SELECT * FROM messages WHERE uid=' + uid + ' AND IS_READ=0;'
+    query = 'SELECT * FROM messages WHERE uid=' + uid + ' AND IS_READ=NULL;'
     messages = @db_connection.query(query)
     read_messages(messages)
   end
@@ -99,7 +99,7 @@ class Messenger
   def retrieve_unread_messages_from(token, from)
     uid = get_uid_from_token(token)
     uid_from = get_uid_from_name(from)
-    query = 'select * from messages where uid=' + uid + ' AND uid_from=' + uid_from + ' AND IS_READ=0;'
+    query = 'select * from messages where uid=' + uid + ' AND uid_from=' + uid_from + ' AND IS_READ=NULL;'
   end
 
   # convert messages into a 2D array of [ [from], [messages] ]

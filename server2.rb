@@ -1,6 +1,6 @@
-require 'socket' 
-require 'rubygems'
+require 'socket'
 require 'mqtt'
+require 'rubygems' 
 require_relative 'messenger/messenger.rb'
 
 class Server
@@ -17,7 +17,6 @@ class Server
       STDERR.puts test
       request = socket.recv(4096)
       STDERR.puts request
-
       #  
       # Dave|sendMessage|Catherine|i am working on marvin|
       #ie
@@ -52,7 +51,6 @@ class Server
     when 'sendMessage'
       print args[2] + " " +args[1] + " "+ args[3]
       @messenger.send_message(args[2], args[0], args[3])
-      STDERR.puts args[2]
       MQTT::Client.connect('localhost') do |c|
         c.publish(args[2], 'notify')
       end

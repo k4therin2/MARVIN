@@ -11,3 +11,11 @@ then just listens for ANY message, which will then cause it to play the message 
 If we want, we can publish the sender's name to the topic, send that to the pi, and use
 a different TTS engine to say you have a message from -Sender-, otherwise the notification
 will need to be general
+
+NAMES OF PI's AND PORTS:
+
+Austin: 81
+Rose: 82
+Arthur: 83
+Douglas: 84
+Adam: 85
