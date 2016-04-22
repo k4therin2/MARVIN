@@ -11,7 +11,7 @@ class Messenger
     @database = 'Marvin'
     @user_table = 'users'
     @message_table = 'messages'
-    @db_connection.query('USE UserProfiles')
+    @db_connection.query('USE Marvin')
   end
 
   #========== ADD/DELETE A USER ==============
@@ -155,6 +155,7 @@ class Messenger
 
   # build String response to "Read me a message from Dan." (dan = from)
   def build_read_message_response(token, from)
+    print "\n\n building response: " + from+ "\n"
     (from, messages) = retrieve_unread_messages_from(token, from)
     size = from.size
     response = ''
