@@ -304,7 +304,7 @@ def read_message(intent, session):
         s.close()
         speech_output = str(data)
         reprompt_text = str(data)
-        should_end_session = True;
+        should_end_session = False;
     else:
         speech_output = "I couldn't get those messages"
         reprompt_text = "I couldn't get those messages"
@@ -315,6 +315,7 @@ def read_message(intent, session):
 def read_messages(intent, session):
 
     id = session['user']['userId']
+    card_title = intent['name']
     session_attributes = {}
     should_end_session = False
     
@@ -330,7 +331,7 @@ def read_messages(intent, session):
     s.close()
     speech_output = str(data)
     reprompt_text = str(data)
-    should_end_session = True;
+    should_end_session = False;
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
