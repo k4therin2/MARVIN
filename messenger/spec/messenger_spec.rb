@@ -73,5 +73,12 @@ describe Messenger do
   end
 
   #======= ALTERING/RETRIEVEING MESSAGE METHODS TESTED MANUALLY =============
+
+  it 'can send a message' do
+    token = 'test_token7'
+    @messenger.add_user(@user_name, token)
+    expect{@messenger.send_message(@user_name, token, "testmessage")}.to_not raise_error
+     @messenger.delete_message(@user_name, token, "testmessage")
+  end
 end
 

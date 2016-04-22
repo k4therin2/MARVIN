@@ -18,7 +18,6 @@ class Messenger
   def add_user(name, token)
     name = name.downcase
     query = 'INSERT INTO users (name, token) VALUES("' + String(name) + '","' + String(token) + '");'
-    print query
     @db_connection.query(query)
   end
 
@@ -61,14 +60,21 @@ class Messenger
 
   # send a message to TO, from FROM reading MESSAGE
   # TO is a name, FROM is a token (!!!!!!!!!!)
-  def send_message(to, from, message)
+  def send_message(to, from_token, message)
     uid = get_uid_from_name(to)
-    from_name = get_name_from_token(from)
+    from_name = get_name_from_token(from_token)
     uid_from = get_uid_from_name(from_name)
     query = 'INSERT INTO messages (uid,message,uid_from) VALUES(' + String(uid) +',"'+ String(message) + '",'+String(uid_from)+');'
     @db_connection.query(query)
   end
 
+  def delete_message(to, from_token, message)
+    uid = get_uid_from_name(to)
+    from_name = get_name_from_token(from_token)
+    uid_from = get_uid_from_name(from_name)
+    query = 'DELETE FROM messages WHERE uid='+String(uid)+' AND uid_from=' + String(uid_from) +' AND message="'+message+'";'
+    @db_connection.query(query)
+  end
   # mark a messages "is_read" attribute as TRUE
   def mark_read(mid)
     query = 'UPDATE messages SET is_read=TRUE WHERE mid=' + String(mid) + ';'
