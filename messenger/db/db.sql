@@ -4,7 +4,7 @@ CREATE TABLE messages (
   mid INT NOT NULL AUTO_INCREMENT,
   uid INT NOT NULL,
   message TEXT,
-  is_read BOOLEAN,
+  is_read BOOLEAN DEFAULT FALSE,
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   uid_from INT NOT NULL,
   PRIMARY KEY (mid,uid, uid_from),
