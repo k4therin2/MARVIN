@@ -23,7 +23,7 @@ class Messenger
 
   def delete_user_by_name(name)
     name = name.downcase
-    query = "DELETE FROM users WHERE name=\"" + name + "\";"
+    query = 'DELETE FROM users WHERE name="' + name + '";'
     @db_connection.query(query)
   end
 
@@ -67,26 +67,26 @@ class Messenger
       uid = get_uid_from_name(to)
       from_name = get_name_from_token(from_token)
       uid_from = get_uid_from_name(from_name)
-      query = 'INSERT INTO messages (uid,message,uid_from) VALUES(' + String(uid) +',"'+ String(message) + '",'+String(uid_from)+');'
+      query = 'INSERT INTO messages (uid,message,uid_from) VALUES(' + String(uid) + ',"' + String(message) + '",' + String(uid_from) + ');'
       @db_connection.query(query)
-      "Message sent!"
+      'Message sent!'
     end
   end
 
   def user_exists?(to)
-    query = 'select * from users where name="'+to+'";'
+    query = 'select * from users where name="' + to + '";'
     response = @db_connection.query(query)
-    return !response.nil?
+    !response.nil?
   end
-
 
   def delete_message(to, from_token, message)
     uid = get_uid_from_name(to)
     from_name = get_name_from_token(from_token)
     uid_from = get_uid_from_name(from_name)
-    query = 'DELETE FROM messages WHERE uid='+String(uid)+' AND uid_from=' + String(uid_from) +' AND message="'+message+'";'
+    query = 'DELETE FROM messages WHERE uid=' + String(uid) + ' AND uid_from=' + String(uid_from) + ' AND message="' + message + '";'
     @db_connection.query(query)
   end
+
   # mark a messages "is_read" attribute as TRUE
   def mark_read(mid)
     query = 'UPDATE messages SET is_read=TRUE WHERE mid=' + String(mid) + ';'
@@ -165,7 +165,7 @@ class Messenger
     response = ''
     while size > 0
       response << from[size - 1] + ' says ' + messages[size - 1] + '.  '
-      size = size -1
+      size -= 1
     end
     response
   end

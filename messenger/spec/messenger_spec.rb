@@ -77,35 +77,34 @@ describe Messenger do
   it 'can send a message' do
     token = 'test_token7'
     @messenger.add_user(@user_name, token)
-    expect{@messenger.send_message(@user_name, token, "testmessage")}.to_not raise_error
+    expect { @messenger.send_message(@user_name, token, 'testmessage') }.to_not raise_error
     @messenger.delete_user_by_name(@user_name)
   end
 
   it 'can check inbox' do
     token = 'test_token8'
     @messenger.add_user(@user_name, token)
-    @messenger.send_message(@user_name, token, "testmessage")
+    @messenger.send_message(@user_name, token, 'testmessage')
     response = @messenger.build_check_messages_response(token)
-    expect(response).to eq "You have a message from test_user."
+    expect(response).to eq 'You have a message from test_user.'
     @messenger.delete_user_by_name(@user_name)
   end
 
   it 'can read all messages back' do
     token = 'test_token8'
     @messenger.add_user(@user_name, token)
-    @messenger.send_message(@user_name, token, "testmessage")
+    @messenger.send_message(@user_name, token, 'testmessage')
     response = @messenger.build_read_messages_response(token)
-    expect(response).to eq "test_user says testmessage.  "
+    expect(response).to eq 'test_user says testmessage.  '
     @messenger.delete_user_by_name(@user_name)
   end
-
 
   it 'reads a specific messages back' do
     token = 'test_token9'
     @messenger.add_user(@user_name, token)
-    @messenger.send_message(@user_name, token, "testmessage")
+    @messenger.send_message(@user_name, token, 'testmessage')
     response = @messenger.build_read_message_response(token, @user_name)
-    expect(response).to eq "test_user says testmessage.  "
+    expect(response).to eq 'test_user says testmessage.  '
     @messenger.delete_user_by_name(@user_name)
   end
 end
