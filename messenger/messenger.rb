@@ -38,14 +38,7 @@ class Messenger
   end
 
   def get_uid_from_token(token)
-    did = get_did_from_token(token)
-    query = 'select uid from users where device_id=' + did + ';'
-    @db_connection.query(query).fetch_row[0]
-  end
-
-  #======= GET DID METHODS ==============
-  def get_did_from_token(token)
-    query = 'select device_id from devices where token="' + token + '";'
+    query = 'select uid from users where token="' + token + '";'
     @db_connection.query(query).fetch_row[0]
   end
 
@@ -59,11 +52,7 @@ class Messenger
   end
 
   def get_name_from_token(token)
-    query = 'SELECT device_id FROM devices WHERE token="' + token + '";'
-    results = @db_connection.query(query)
-    row = results.fetch_row
-    device_id = row[0]
-    query = 'SELECT name FROM users WHERE device_id=' + device_id + ';'
+    query = 'SELECT name FROM users WHERE token="' + token + '";'
     name = @db_connection.query(query).fetch_row
     name[0]
   end
@@ -76,7 +65,7 @@ class Messenger
     uid = get_uid_from_name(to)
     from_name = get_name_from_token(from)
     uid_from = get_uid_from_name(from_name)
-    query = 'INSERT INTO messages (uid, uid_from, message) VALUES(' + String(uid) + ',' + String(uid_from) + ',"' + String(message) + '");'
+    query = 'INSERT INTO messages (uid,message,uid_from) VALUES(' + String(uid) +',"'+ String(message) + '",'+String(uid_from)+');'
     @db_connection.query(query)
   end
 

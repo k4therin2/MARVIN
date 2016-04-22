@@ -54,9 +54,9 @@ describe Messenger do
   it 'can get name from uid' do
     token = 'test_token5'
     @messenger.add_user(@user_name, token)
-    users_check = @messenger.db_connection.query('select name from users where token=' + token + ';')
+    users_check = @messenger.db_connection.query('select name from users where token="' + token + '";')
     name = users_check.fetch_row[0]
-    uid_check = @messenger.db_connection.query('select uid from users where token=' + token + ';')
+    uid_check = @messenger.db_connection.query('select uid from users where token="' + token + '";')
     uid = uid_check.fetch_row[0]
     expect(@messenger.get_name_from_uid(uid)).to eq name
     @messenger.delete_user_by_name(@user_name)
