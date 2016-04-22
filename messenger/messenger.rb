@@ -61,12 +61,24 @@ class Messenger
   # send a message to TO, from FROM reading MESSAGE
   # TO is a name, FROM is a token (!!!!!!!!!!)
   def send_message(to, from_token, message)
-    uid = get_uid_from_name(to)
-    from_name = get_name_from_token(from_token)
-    uid_from = get_uid_from_name(from_name)
-    query = 'INSERT INTO messages (uid,message,uid_from) VALUES(' + String(uid) +',"'+ String(message) + '",'+String(uid_from)+');'
-    @db_connection.query(query)
+    if user_exists?(to)
+      return "That user doesn't exist, you moron."
+    else
+      uid = get_uid_from_name(to)
+      from_name = get_name_from_token(from_token)
+      uid_from = get_uid_from_name(from_name)
+      query = 'INSERT INTO messages (uid,message,uid_from) VALUES(' + String(uid) +',"'+ String(message) + '",'+String(uid_from)+');'
+      @db_connection.query(query)
+      "Message sent!"
+    end
   end
+
+  def user_exists?(to)
+    query = 'select * from users where name="'+to+'";'
+    response = @db_connection.query(query)
+    return !response.nil?
+  end
+
 
   def delete_message(to, from_token, message)
     uid = get_uid_from_name(to)
