@@ -17,12 +17,8 @@ class Messenger
   #========== ADD/DELETE A USER ==============
   def add_user(name, token)
     name = name.downcase
-    query = 'INSERT INTO devices (token) VALUES("' + token + '");'
-    @db_connection.query(query)
-    query = 'SELECT * FROM devices WHERE token="' + token + '";'
-    results = @db_connection.query(query).fetch_row
-    device_id = results[0]
-    query = 'INSERT INTO users (name, device_id) VALUES("' + String(name) + '",' + String(device_id) + ');'
+    query = 'INSERT INTO users (name, token) VALUES("' + String(name) + '","' + String(token) + '");'
+    print query
     @db_connection.query(query)
   end
 
