@@ -193,14 +193,8 @@ def send_message_now(intent, session):
         s.send(newmessage)
         data = s.recv(size)
         s.close()
-        speech_output = "I sent " + \
-                        recipient + \
-                        " the message " + \
-                        message
-        reprompt_text = "I sent " + \
-                        recipient + \
-                        " the message " + \
-                        message
+        speech_output = str(data)
+        reprompt_text = str(data)
         should_end_session = True;
     else:
         speech_output = "I don't understand the message"
@@ -240,14 +234,8 @@ def send_message_to_now(intent, session):
         s.send(newmessage)
         data = s.recv(size)
         s.close()
-        speech_output = "I sent " + \
-                        recipient + \
-                        " the message " + \
-                        message
-        reprompt_text = "I sent " + \
-                        recipient + \
-                        " the message " + \
-                        message
+        speech_output = str(data)
+        reprompt_text = str(data)
         should_end_session = True;
     else:
         speech_output = "I don't understand the message"
