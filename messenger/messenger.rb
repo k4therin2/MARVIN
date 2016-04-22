@@ -62,6 +62,7 @@ class Messenger
   # TO is a name, FROM is a token (!!!!!!!!!!)
   def send_message(to, from_token, message)
     if user_exists?(to)
+      print "user didnt exist"
       return "That user doesn't exist, you moron."
     else
       uid = get_uid_from_name(to)
@@ -76,7 +77,7 @@ class Messenger
   def user_exists?(to)
     query = 'select * from users where name="' + to + '";'
     response = @db_connection.query(query)
-    !response.nil?
+    response.nil?
   end
 
   def delete_message(to, from_token, message)

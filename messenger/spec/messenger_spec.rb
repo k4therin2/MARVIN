@@ -91,7 +91,7 @@ describe Messenger do
   end
 
   it 'can read all messages back' do
-    token = 'test_token8'
+    token = 'test_token9'
     @messenger.add_user(@user_name, token)
     @messenger.send_message(@user_name, token, 'testmessage')
     response = @messenger.build_read_messages_response(token)
@@ -100,7 +100,7 @@ describe Messenger do
   end
 
   it 'reads a specific messages back' do
-    token = 'test_token9'
+    token = 'test_token10'
     @messenger.add_user(@user_name, token)
     @messenger.send_message(@user_name, token, 'testmessage')
     response = @messenger.build_read_message_response(token, @user_name)
