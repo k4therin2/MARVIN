@@ -1,4 +1,5 @@
 require 'mysql'
+require 'indico'
 
 class Messenger
   attr_accessor :db_connection
@@ -10,6 +11,7 @@ class Messenger
     @user_table = 'users'
     @message_table = 'messages'
     @db_connection.query('USE Marvin')
+    Indico.api_key = "bd82ef276b0e0cb017a044f6a1740976"
   end
 
   #========== ADD/DELETE A USER ==============
@@ -167,6 +169,23 @@ class Messenger
       size -= 1
     end
     response
+  end
+
+#Build string response to "how is Dan feeling" (dan = from)
+  def build_check_mood_response(token, from)
+    (from, messages) = retrieve_unread_messages_from(token, from)
+    size = from.size
+    response = ''
+    finalMood = 1.0
+    floatList = []
+    while size > 0
+      floatList << Indico.sentiment(messages[size - 1])
+      size -= 1
+    end
+    size = floatList.size
+    finalMood = floatList.inject(:+)/size
+    #USE FINAL MOOD TO CREATE CUSTOM RESPONSE (e.g. 0.90 or > means theyre feeling great)
+    finalMood
   end
 
   # helper for building the string to append to "you have messages from " : ... "Dan, Meghan and Tim."

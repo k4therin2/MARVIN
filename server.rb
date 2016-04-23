@@ -34,7 +34,7 @@ class Server
       print args[2] + ' ' + args[1] + ' ' + args[3]
       response = @messenger.send_message(args[2], args[0], args[3])
       MQTT::Client.connect('localhost') do |c|
-        c.publish(args[2], 'notify')
+        c.publish(args[2].downcase, 'notify')
       end
       response
     when 'checkMessages'
@@ -43,8 +43,8 @@ class Server
       response = @messenger.build_read_messages_response(token)
     when 'readMessage' # read one message from a specified sender
       response = @messenger.build_read_message_response(token, args[2])
-    when 'moodCheck'
-      response = @messenger.build_mood_check_response(token, args[2])
+    when 'checkMood'
+      response = @messenger.build_check_mood_response(token, args[2])
     end
   end
 end
