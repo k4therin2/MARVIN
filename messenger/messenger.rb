@@ -174,8 +174,12 @@ class Messenger
 #Build string response to "how is Dan feeling" (dan = from)
   def build_check_mood_response(token, from)
     (from, messages) = retrieve_unread_messages_from(token, from)
-    size = from.size
     response = ''
+    if messages.empty?
+      response = 'I cant check on how they are feeling, you have no messages from them'
+      return response
+    end
+    size = from.size
     finalMood = 1.0
     floatList = []
     while size > 0
@@ -185,7 +189,30 @@ class Messenger
     size = floatList.size
     finalMood = floatList.inject(:+)/size
     #USE FINAL MOOD TO CREATE CUSTOM RESPONSE (e.g. 0.90 or > means theyre feeling great)
-    finalMood
+    if finalMood < 0.1
+      response = from[0] + ' seems to be extremely irratable.'
+      return response
+    elsif finalMood < 0.3
+      response = from[0] + ' seems to be quite upset.'
+      return response
+    elsif finalMood < 0.4
+      response = from[0] + ' could be doing better.'
+      return response
+    elsif finalMood < 0.6
+      response = from[0] + ' eh.'
+      return response
+    elsif finalMood < 0.7
+      response = from[0] + ' is feeling good.'
+      return response
+    elsif finalMood < 0.8
+      response = from[0] + ' is feeling pretty good.'
+      return response
+    elsif finalMood < 0.9
+      response = from[0] + ' is feeling great!'
+      return response
+    end
+    response = from[0] + ' is way too happy'
+    response 
   end
 
   # helper for building the string to append to "you have messages from " : ... "Dan, Meghan and Tim."
