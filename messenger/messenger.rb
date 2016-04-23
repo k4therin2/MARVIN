@@ -27,6 +27,11 @@ class Messenger
     @db_connection.query(query)
   end
 
+  def delete_user(token)
+    query = 'DELETE FROM users WHERE token="' + token + '";'
+    @db_connection.query(query)
+  end
+
   #======= GET UID METHODS =============
   def get_uid_from_name(name)
     name = name.downcase
